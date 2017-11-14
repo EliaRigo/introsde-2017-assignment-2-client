@@ -1,0 +1,150 @@
+Request #1: GET /person Accept: application/xml
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><people>
+  <person>
+    <idPerson>1</idPerson>
+    <firstname>Massimo</firstname>
+    <lastname>Rossi</lastname>
+    <birthdate>1991-01-15</birthdate>
+    <activitiesPreference/>
+  </person>
+  <person>
+    <idPerson>2</idPerson>
+    <firstname>Luca</firstname>
+    <lastname>Bianchi</lastname>
+    <birthdate>1992-02-10</birthdate>
+    <activitiesPreference>
+      <activity>
+        <activityType>
+          <activity_type>Social</activity_type>
+        </activityType>
+        <description>Dancing Group Dances</description>
+        <idActivity>2</idActivity>
+        <idActivityType>1</idActivityType>
+        <idPerson>2</idPerson>
+        <name>Dancing</name>
+        <place>Iris Club</place>
+        <startdate>2017-10-13T21:00:00.0</startdate>
+      </activity>
+    </activitiesPreference>
+  </person>
+  <person>
+    <idPerson>3</idPerson>
+    <firstname>Filippo</firstname>
+    <lastname>Turri</lastname>
+    <birthdate>1992-10-23</birthdate>
+    <activitiesPreference>
+      <activity>
+        <activityType>
+          <activity_type>Sport</activity_type>
+        </activityType>
+        <description>Boxing in the gym</description>
+        <idActivity>3</idActivity>
+        <idActivityType>2</idActivityType>
+        <idPerson>3</idPerson>
+        <name>Boxing</name>
+        <place>Santa Chiara Sport Gym</place>
+        <startdate>2017-10-14T18:00:00.0</startdate>
+      </activity>
+    </activitiesPreference>
+  </person>
+  <person>
+    <idPerson>4</idPerson>
+    <firstname>Piano</firstname>
+    <lastname>Neri</lastname>
+    <birthdate>1993-05-15</birthdate>
+    <activitiesPreference>
+      <activity>
+        <activityType>
+          <activity_type>Sport</activity_type>
+        </activityType>
+        <description>Skiing on the Bondone Mountain</description>
+        <idActivity>4</idActivity>
+        <idActivityType>2</idActivityType>
+        <idPerson>4</idPerson>
+        <name>Skiing</name>
+        <place>Bondone Mountain</place>
+        <startdate>2017-10-15T0800:00.0</startdate>
+      </activity>
+    </activitiesPreference>
+  </person>
+  <person>
+    <idPerson>5</idPerson>
+    <firstname>Gianni</firstname>
+    <lastname>Cassia</lastname>
+    <birthdate>1994-05-25</birthdate>
+    <activitiesPreference>
+      <activity>
+        <activityType>
+          <activity_type>Social</activity_type>
+        </activityType>
+        <description>Bowling with friends</description>
+        <idActivity>5</idActivity>
+        <idActivityType>1</idActivityType>
+        <idPerson>5</idPerson>
+        <name>Bowling</name>
+        <place>Dro Gigajoy</place>
+        <startdate>2017-10-16T22:00:00.0</startdate>
+      </activity>
+    </activitiesPreference>
+  </person>
+</people>
+
+Request #2: GET /person/1 Accept: application/xml
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><person>
+  <idPerson>1</idPerson>
+  <firstname>Massimo</firstname>
+  <lastname>Rossi</lastname>
+  <birthdate>1991-01-15</birthdate>
+  <activitiesPreference/>
+</person>
+
+Request #3: PUT /person/1 Accept: application/xml Content-Type: application/xml
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><person>
+  <idPerson>1</idPerson>
+  <firstname>Massimo</firstname>
+  <lastname>Rossi</lastname>
+  <birthdate>1991-01-15</birthdate>
+</person>
+
+Request #4: POST /person Accept: application/xml Content-Type: application/xml
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><person>
+  <idPerson>18</idPerson>
+  <firstname>Antonio</firstname>
+  <lastname>Sierte</lastname>
+  <birthdate>1992-10-17</birthdate>
+  <activitiesPreference>
+    <activity>
+      <description>Playing music with Sax</description>
+      <idActivity>19</idActivity>
+      <idActivityType>1</idActivityType>
+      <idPerson>18</idPerson>
+      <name>Saxing</name>
+      <place>City Centre Trento</place>
+      <startdate>2017-10-13T10:50:00.0</startdate>
+    </activity>
+  </activitiesPreference>
+</person>
+
+Request #5: DELETE /person/18 Accept: application/xml
+=> Result: OK
+=> HTTP Status: 204
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+Request #6: GET /activity_types Accept: application/xml
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><activityTypes>
+  <activity_type>Social</activity_type>
+  <activity_type>Sport</activity_type>
+  <activity_type>Outdoor</activity_type>
+</activityTypes>
+

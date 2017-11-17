@@ -1,0 +1,120 @@
+Request #1: GET /person Accept: application/json
+=> Result: OK
+=> HTTP Status: 200
+[ {
+  "idPerson" : 1,
+  "firstname" : "Graziano",
+  "lastname" : "Rossi",
+  "birthdate" : "1991-01-15",
+  "activity" : [ ]
+}, {
+  "idPerson" : 2,
+  "firstname" : "Luca",
+  "lastname" : "Bianchi",
+  "birthdate" : "1992-02-10",
+  "activity" : [ {
+    "idActivity" : 2,
+    "idPerson" : 2,
+    "idActivityType" : 1,
+    "name" : "Dancing",
+    "description" : "Dancing Group Dances",
+    "place" : "Iris Club",
+    "startdate" : "2017-10-13T21:00:00.0",
+    "activityType" : {
+      "activity_type" : "Social"
+    }
+  } ]
+}, {
+  "idPerson" : 3,
+  "firstname" : "Filippo",
+  "lastname" : "Turri",
+  "birthdate" : "1992-10-23",
+  "activity" : [ {
+    "idActivity" : 3,
+    "idPerson" : 3,
+    "idActivityType" : 2,
+    "name" : "Boxing",
+    "description" : "Boxing in the gym",
+    "place" : "Santa Chiara Sport Gym",
+    "startdate" : "2017-10-14T18:00:00.0",
+    "activityType" : {
+      "activity_type" : "Sport"
+    }
+  } ]
+}, {
+  "idPerson" : 4,
+  "firstname" : "Piano",
+  "lastname" : "Neri",
+  "birthdate" : "1993-05-15",
+  "activity" : [ {
+    "idActivity" : 4,
+    "idPerson" : 4,
+    "idActivityType" : 2,
+    "name" : "Skiing",
+    "description" : "Skiing on the Bondone Mountain",
+    "place" : "Bondone Mountain",
+    "startdate" : "2017-10-15T0800:00.0",
+    "activityType" : {
+      "activity_type" : "Sport"
+    }
+  } ]
+}, {
+  "idPerson" : 5,
+  "firstname" : "Gianni",
+  "lastname" : "Cassia",
+  "birthdate" : "1994-05-25",
+  "activity" : [ {
+    "idActivity" : 5,
+    "idPerson" : 5,
+    "idActivityType" : 1,
+    "name" : "Bowling",
+    "description" : "Bowling with friends",
+    "place" : "Dro Gigajoy",
+    "startdate" : "2017-10-16T22:00:00.0",
+    "activityType" : {
+      "activity_type" : "Social"
+    }
+  } ]
+} ]
+Request #2: GET /person/1 Accept: application/json
+=> Result: OK
+=> HTTP Status: 200
+{
+  "idPerson" : 1,
+  "firstname" : "Graziano",
+  "lastname" : "Rossi",
+  "birthdate" : "1991-01-15",
+  "activity" : [ ]
+}
+Request #3: PUT /person/1 Accept: application/json Content-Type: application/json
+=> Result: OK
+=> HTTP Status: 200
+{
+  "idPerson" : 1,
+  "firstname" : "Graziano",
+  "lastname" : "Rossi",
+  "birthdate" : "1991-01-15"
+}
+Request #4: POST /person Accept: application/json Content-Type: application/json
+=> Result: OK
+=> HTTP Status: 200
+{
+  "idPerson" : 7,
+  "firstname" : "Enrico",
+  "lastname" : "Chiesa",
+  "birthdate" : "1993-02-10",
+  "activity" : [ {
+    "idActivity" : 8,
+    "idPerson" : 7,
+    "idActivityType" : 3,
+    "name" : "Climbing",
+    "description" : "Mountain Climbing",
+    "place" : "Bondone Mountain",
+    "startdate" : "2017-10-10T10:30:00.0",
+    "activityType" : null
+  } ]
+}
+Request #5: DELETE /person/7 Accept: application/json
+=> Result: OK
+=> HTTP Status: 204
+null

@@ -7,7 +7,32 @@ Request #1: GET /person Accept: application/xml
     <firstname>Massimo</firstname>
     <lastname>Rossi</lastname>
     <birthdate>1991-01-15</birthdate>
-    <activitiesPreference/>
+    <activitiesPreference>
+      <activity>
+        <activityType>
+          <activity_type>Social</activity_type>
+        </activityType>
+        <description>Running with friends</description>
+        <idActivity>1</idActivity>
+        <idActivityType>1</idActivityType>
+        <idPerson>1</idPerson>
+        <name>Running</name>
+        <place>City Centre Trento</place>
+        <startdate>2017-10-13T09:50:00.0</startdate>
+      </activity>
+      <activity>
+        <activityType>
+          <activity_type>Social</activity_type>
+        </activityType>
+        <description>Skateboarding with friends</description>
+        <idActivity>6</idActivity>
+        <idActivityType>1</idActivityType>
+        <idPerson>1</idPerson>
+        <name>Skateboarding</name>
+        <place>Rovereto Centre</place>
+        <startdate>2017-10-17T16:00:00.0</startdate>
+      </activity>
+    </activitiesPreference>
   </person>
   <person>
     <idPerson>2</idPerson>
@@ -99,7 +124,32 @@ Request #2: GET /person/1 Accept: application/xml
   <firstname>Massimo</firstname>
   <lastname>Rossi</lastname>
   <birthdate>1991-01-15</birthdate>
-  <activitiesPreference/>
+  <activitiesPreference>
+    <activity>
+      <activityType>
+        <activity_type>Social</activity_type>
+      </activityType>
+      <description>Running with friends</description>
+      <idActivity>1</idActivity>
+      <idActivityType>1</idActivityType>
+      <idPerson>1</idPerson>
+      <name>Running</name>
+      <place>City Centre Trento</place>
+      <startdate>2017-10-13T09:50:00.0</startdate>
+    </activity>
+    <activity>
+      <activityType>
+        <activity_type>Social</activity_type>
+      </activityType>
+      <description>Skateboarding with friends</description>
+      <idActivity>6</idActivity>
+      <idActivityType>1</idActivityType>
+      <idPerson>1</idPerson>
+      <name>Skateboarding</name>
+      <place>Rovereto Centre</place>
+      <startdate>2017-10-17T16:00:00.0</startdate>
+    </activity>
+  </activitiesPreference>
 </person>
 
 Request #3: PUT /person/1 Accept: application/xml Content-Type: application/xml
@@ -116,22 +166,28 @@ Request #4: POST /person Accept: application/xml Content-Type: application/xml
 => Result: OK
 => HTTP Status: 200
 <?xml version="1.0" encoding="UTF-8"?><person>
-  <idPerson>8</idPerson>
+  <idPerson>6</idPerson>
   <firstname>Antonio</firstname>
   <lastname>Sierte</lastname>
   <birthdate>1992-10-17</birthdate>
   <activitiesPreference>
     <activity>
       <description>Playing music with Sax</description>
-      <idActivity>60</idActivity>
-      <idActivityType>0</idActivityType>
-      <idPerson>8</idPerson>
+      <idActivity>7</idActivity>
+      <idActivityType>1</idActivityType>
+      <idPerson>6</idPerson>
       <name>Saxing</name>
       <place>City Centre Trento</place>
       <startdate>2017-10-13T10:50:00.0</startdate>
     </activity>
   </activitiesPreference>
 </person>
+
+Request #5: DELETE /person/6 Accept: application/xml
+=> Result: OK
+=> HTTP Status: 204
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
 
 Request #6: GET /activity_types Accept: application/xml
 => Result: OK
@@ -188,18 +244,6 @@ Request #7: GET /person/5/Social Accept: application/xml
     <place>Dro Gigajoy</place>
     <startdate>2017-10-16T22:00:00.0</startdate>
   </activity>
-  <activity>
-    <activityType>
-      <activity_type>Social</activity_type>
-    </activityType>
-    <description>Bowling with friends1</description>
-    <idActivity>57</idActivity>
-    <idActivityType>1</idActivityType>
-    <idPerson>5</idPerson>
-    <name>Bowling123</name>
-    <place>Dro Gigajoy</place>
-    <startdate>2017-10-16T22:00:00.0</startdate>
-  </activity>
 </activities>
 
 Request #8: GET /person/5/Social/5 Accept: application/xml
@@ -216,5 +260,21 @@ Request #8: GET /person/5/Social/5 Accept: application/xml
   <name>Bowling</name>
   <place>Dro Gigajoy</place>
   <startdate>2017-10-16T22:00:00.0</startdate>
+</activity>
+
+Request #9: POST /person/1/Social Accept: application/xml Content-Type: application/xml
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><activity>
+  <activityType>
+    <activity_type>Social</activity_type>
+  </activityType>
+  <description>Surfing with my friends</description>
+  <idActivity>8</idActivity>
+  <idActivityType>1</idActivityType>
+  <idPerson>1</idPerson>
+  <name>Surfing</name>
+  <place>Garda Lake</place>
+  <startdate>2017-10-10T14:00:00.0</startdate>
 </activity>
 

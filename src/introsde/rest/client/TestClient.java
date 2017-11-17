@@ -62,7 +62,7 @@ public class TestClient {
 	private static String json;
 	private static Document doc;
 	private static Response resp;
-	private static String measureId;
+	private static String activityId;
 	private static String activityType;
 	private static ObjectMapper mapper;
 	private static PrintStream printxml;
@@ -130,6 +130,13 @@ public class TestClient {
 			System.out.println("Request #8: OK");
 		} else {
 			System.out.println("Request #8: ERROR");
+		}
+		printResult();
+		
+		if (api9XML(activitiesType)) {
+			System.out.println("Request #9: OK");
+		} else {
+			System.out.println("Request #9: ERROR");
 		}
 		printResult();
 	}
@@ -426,11 +433,9 @@ public class TestClient {
 		    	    expr = xpath.compile("//activity_type");
 		    	    node = (Node) expr.evaluate(doc, XPathConstants.NODE);
 		    		activityType = node.getTextContent();
-		    		System.out.println(activityType);
 		    		expr = xpath.compile("//idActivity[1]");
 		    	    node = (Node) expr.evaluate(doc, XPathConstants.NODE);
-		    		measureId = node.getTextContent();
-		    		System.out.println(measureId);
+		    		activityId = node.getTextContent();
 		    		id = first_id;
 		    		this_res = resp;
 		    		this_req = request1;   
@@ -453,7 +458,7 @@ public class TestClient {
 	    // Accept: application/xml
 	    //variable
 	    start = "Request #8: GET /";
-	    request = "person/" + id + "/" + activityType + "/" + measureId;
+	    request = "person/" + id + "/" + activityType + "/" + activityId;
 	    type = MediaType.APPLICATION_XML;
 	    content = null;
 	    result = false;
@@ -466,6 +471,52 @@ public class TestClient {
 	    
 	    if (resp.getStatus() == 200 || resp.getStatus() == 202) result = true;  
 		
+	    return result;
+	}
+	
+	private static boolean api9XML(String[] vector) throws SAXException, IOException, XPathExpressionException, TransformerException{	    
+	    // POST Request #9 --- POST  BASEURL/person/{first_person_id}/{activityType}
+	    // Accept: application/xml
+	    
+		/* First call */
+	    api7XML(vector, first_id);
+	    XPathExpression expr = xpath.compile("count(//activity)");
+	    int count = Integer.parseInt((String)expr.evaluate(doc, XPathConstants.STRING));
+	    
+	    start = "Request #9: POST /";
+	    type = MediaType.APPLICATION_XML;
+	    content = MediaType.APPLICATION_XML;
+	    result = false;
+	    request = "person/" + first_id + "/" + activityType;
+	    String requestBody = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + 
+	    					"<activity>" + 
+	    					"<description>Surfing with my friends</description>" + 
+	    					"<name>Surfing</name>" + 
+	    					"<place>Garda Lake</place>" + 
+	    					"<startdate>2017-10-10T14:00:00.0</startdate>" + 
+	    					"</activity>";
+
+
+	    Response this_resp = service.path(request).request().accept(type).post(Entity.entity(requestBody, content));
+	    String this_xml = this_resp.readEntity(String.class);
+	    Document this_doc = builder.parse(new InputSource(new StringReader(this_xml)));
+	    
+	    /* Second call */
+	    api7XML(vector, first_id);
+	    expr = xpath.compile("count(//activity)");
+	    int second_count = Integer.parseInt((String)expr.evaluate(doc, XPathConstants.STRING));
+	    
+	    // Reset variable
+	    start = "Request #9: POST /";
+	    type = MediaType.APPLICATION_XML;
+	    content = MediaType.APPLICATION_XML;
+	    result = false;
+	    request = "person/" + first_id + "/" + activityType;
+	    resp = this_resp;
+	    xml = this_xml;
+	    doc = this_doc;
+
+	    if (count + 1 == second_count) result = true;
 	    return result;
 	}
 }

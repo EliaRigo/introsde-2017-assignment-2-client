@@ -62,8 +62,8 @@ public class TestClient {
 	private static String json;
 	private static Document doc;
 	private static Response resp;
-	private static String measure_id;
-	private static String measure_type;
+	private static String measureId;
+	private static String activityType;
 	private static ObjectMapper mapper;
 	private static PrintStream printxml;
 	private static PrintStream printjson;
@@ -108,6 +108,29 @@ public class TestClient {
 		printResult();
 		
 		String[] activitiesType = api6XML();
+		if (activitiesType.length > 2) {
+			System.out.println("Request #6: OK");
+		} else {
+			System.out.println("Request #6: ERROR");
+		}
+		printResult();
+		
+		boolean resultApi7XMLFirstId = api7XML(activitiesType, first_id);
+		printResult();
+		boolean resultApi7XMLLastId = api7XML(activitiesType, last_id);
+		printResult();
+		
+		if (resultApi7XMLFirstId && resultApi7XMLLastId) {
+			System.out.println("Request #7: OK");
+		} else {
+			System.out.println("Request #7: ERROR");
+		}
+		
+		if (api8XML(last_id)) {
+			System.out.println("Request #8: OK");
+		} else {
+			System.out.println("Request #8: ERROR");
+		}
 		printResult();
 	}
 
@@ -355,7 +378,7 @@ public class TestClient {
 	    request = "activity_types";
 	    type = MediaType.APPLICATION_XML;
 	    content = null;
-	    result = false;
+	    //result = false;
 	    
 	    resp = service.path(request).request().accept(type).get();
 	    
@@ -365,11 +388,84 @@ public class TestClient {
 	    XPathExpression expr = xpath.compile("//activity_type");
 	    NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
 	    
-	    if (nodes.getLength() > 2) result = true;
+	    //if (nodes.getLength() > 2) result = true;
 	    String[] activitiesType= new String[nodes.getLength()];
  	    for (int i = 0; i< nodes.getLength(); i++){
  	    	activitiesType[i]=nodes.item(i).getTextContent();
 	    }
  	    return activitiesType;
+	}
+
+	private static boolean api7XML(String[] vector, String id) throws SAXException, IOException, XPathExpressionException, TransformerException{	    
+		// GET Request #7 --- GET  BASEURL/person/{id}/{activity_type}
+	    // Accept: application/xml
+	    start = "Request #7: GET /";
+	    request = "person/"+ id + "/";
+	    type = MediaType.APPLICATION_XML;
+	    content = null;
+	    result = false;
+	    Response this_res = null;
+	    String this_req = null;
+	    String this_xml = null;
+	    Document this_doc =null;
+	    
+	    for (int i = 0; i < vector.length; i++){
+	    	String request1 = request + vector[i];
+	    	
+	    	resp = service.path(request1).request().accept(type).get();
+	    	if(resp.getStatus() == 200){
+	    		result = true;
+	    		xml = resp.readEntity(String.class);
+	    	    doc = builder.parse(new InputSource(new StringReader(xml)));
+	    	    XPathExpression test = xpath.compile("//activities");
+	    	    Node nodetest = (Node) test.evaluate(doc, XPathConstants.NODE);
+	    		String resultstring = nodetest.getTextContent();
+	    	    if (!resultstring.isEmpty()){
+	    	    	XPathExpression expr = xpath.compile("//activityType[1]");
+		    	    Node node = (Node) expr.evaluate(doc, XPathConstants.NODE);
+		    	    expr = xpath.compile("//activity_type");
+		    	    node = (Node) expr.evaluate(doc, XPathConstants.NODE);
+		    		activityType = node.getTextContent();
+		    		System.out.println(activityType);
+		    		expr = xpath.compile("//idActivity[1]");
+		    	    node = (Node) expr.evaluate(doc, XPathConstants.NODE);
+		    		measureId = node.getTextContent();
+		    		System.out.println(measureId);
+		    		id = first_id;
+		    		this_res = resp;
+		    		this_req = request1;   
+		    		this_xml = xml;
+		    		this_doc = doc;
+	    	    } 	    
+	    		
+	    	}
+	    	
+	    }
+	    xml = this_xml;
+	    resp = this_res;
+	    request = this_req;
+	    doc = this_doc;
+	    return result;
+	}
+	
+	private static boolean api8XML(String id) throws SAXException, IOException, XPathExpressionException, TransformerException{	    
+	    // GET Request #8 --- GET  BASEURL/person/{id}/{measureType}/{mid}
+	    // Accept: application/xml
+	    //variable
+	    start = "Request #8: GET /";
+	    request = "person/" + id + "/" + activityType + "/" + measureId;
+	    type = MediaType.APPLICATION_XML;
+	    content = null;
+	    result = false;
+	    
+	    resp = service.path(request).request().accept(type).get();
+	    
+	    xml = resp.readEntity(String.class);
+	    if (!xml.isEmpty()) 
+	    	doc = builder.parse(new InputSource(new StringReader(xml)));
+	    
+	    if (resp.getStatus() == 200 || resp.getStatus() == 202) result = true;  
+		
+	    return result;
 	}
 }

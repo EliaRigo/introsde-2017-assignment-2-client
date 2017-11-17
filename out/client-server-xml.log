@@ -116,28 +116,22 @@ Request #4: POST /person Accept: application/xml Content-Type: application/xml
 => Result: OK
 => HTTP Status: 200
 <?xml version="1.0" encoding="UTF-8"?><person>
-  <idPerson>18</idPerson>
+  <idPerson>8</idPerson>
   <firstname>Antonio</firstname>
   <lastname>Sierte</lastname>
   <birthdate>1992-10-17</birthdate>
   <activitiesPreference>
     <activity>
       <description>Playing music with Sax</description>
-      <idActivity>19</idActivity>
-      <idActivityType>1</idActivityType>
-      <idPerson>18</idPerson>
+      <idActivity>60</idActivity>
+      <idActivityType>0</idActivityType>
+      <idPerson>8</idPerson>
       <name>Saxing</name>
       <place>City Centre Trento</place>
       <startdate>2017-10-13T10:50:00.0</startdate>
     </activity>
   </activitiesPreference>
 </person>
-
-Request #5: DELETE /person/18 Accept: application/xml
-=> Result: OK
-=> HTTP Status: 204
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-
 
 Request #6: GET /activity_types Accept: application/xml
 => Result: OK
@@ -147,4 +141,80 @@ Request #6: GET /activity_types Accept: application/xml
   <activity_type>Sport</activity_type>
   <activity_type>Outdoor</activity_type>
 </activityTypes>
+
+Request #7: GET /person/1/Social Accept: application/xml
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><activities>
+  <activity>
+    <activityType>
+      <activity_type>Social</activity_type>
+    </activityType>
+    <description>Running with friends</description>
+    <idActivity>1</idActivity>
+    <idActivityType>1</idActivityType>
+    <idPerson>1</idPerson>
+    <name>Running</name>
+    <place>City Centre Trento</place>
+    <startdate>2017-10-13T09:50:00.0</startdate>
+  </activity>
+  <activity>
+    <activityType>
+      <activity_type>Social</activity_type>
+    </activityType>
+    <description>Skateboarding with friends</description>
+    <idActivity>6</idActivity>
+    <idActivityType>1</idActivityType>
+    <idPerson>1</idPerson>
+    <name>Skateboarding</name>
+    <place>Rovereto Centre</place>
+    <startdate>2017-10-17T16:00:00.0</startdate>
+  </activity>
+</activities>
+
+Request #7: GET /person/5/Social Accept: application/xml
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><activities>
+  <activity>
+    <activityType>
+      <activity_type>Social</activity_type>
+    </activityType>
+    <description>Bowling with friends</description>
+    <idActivity>5</idActivity>
+    <idActivityType>1</idActivityType>
+    <idPerson>5</idPerson>
+    <name>Bowling</name>
+    <place>Dro Gigajoy</place>
+    <startdate>2017-10-16T22:00:00.0</startdate>
+  </activity>
+  <activity>
+    <activityType>
+      <activity_type>Social</activity_type>
+    </activityType>
+    <description>Bowling with friends1</description>
+    <idActivity>57</idActivity>
+    <idActivityType>1</idActivityType>
+    <idPerson>5</idPerson>
+    <name>Bowling123</name>
+    <place>Dro Gigajoy</place>
+    <startdate>2017-10-16T22:00:00.0</startdate>
+  </activity>
+</activities>
+
+Request #8: GET /person/5/Social/5 Accept: application/xml
+=> Result: OK
+=> HTTP Status: 200
+<?xml version="1.0" encoding="UTF-8"?><activity>
+  <activityType>
+    <activity_type>Social</activity_type>
+  </activityType>
+  <description>Bowling with friends</description>
+  <idActivity>5</idActivity>
+  <idActivityType>1</idActivityType>
+  <idPerson>5</idPerson>
+  <name>Bowling</name>
+  <place>Dro Gigajoy</place>
+  <startdate>2017-10-16T22:00:00.0</startdate>
+</activity>
 

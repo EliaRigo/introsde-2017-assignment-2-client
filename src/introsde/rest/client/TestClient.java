@@ -99,12 +99,26 @@ public class TestClient {
 
 		String newPersonId = api4JSON();
 		printResult();
-		
+
 		if (api5JSON(newPersonId)) {
 			System.out.println("Request #5: OK");
 		} else {
 			System.out.println("Request #5: ERROR");
 		}
+		printResult();
+
+		String[] activityType = api6JSON();
+		printResult();
+
+		api7JSON(activityType, first_id);
+		printResult();
+		api7JSON(activityType, last_id);
+		printResult();
+
+		api8JSON(last_id);
+		printResult();
+		
+		api9JSON(activityType);
 		printResult();
 
 		// XML Requests
@@ -383,7 +397,8 @@ public class TestClient {
 		XPathExpression expr = xpath.compile("//activity_type");
 		NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
 
-		// if (nodes.getLength() > 2) result = true;
+		if (nodes.getLength() > 2)
+			result = true;
 		String[] activitiesType = new String[nodes.getLength()];
 		for (int i = 0; i < nodes.getLength(); i++) {
 			activitiesType[i] = nodes.item(i).getTextContent();
@@ -444,7 +459,7 @@ public class TestClient {
 
 	private static boolean api8XML(String id)
 			throws SAXException, IOException, XPathExpressionException, TransformerException {
-		// GET Request #8 --- GET BASEURL/person/{id}/{measureType}/{mid}
+		// GET Request #8 --- GET BASEURL/person/{id}/{activity_type}/{activity_id}
 		// Accept: application/xml
 		start = "Request #8: GET /";
 		request = "person/" + id + "/" + activityType + "/" + activityId;
@@ -480,8 +495,8 @@ public class TestClient {
 		result = false;
 		request = "person/" + first_id + "/" + activityType;
 		String requestBody = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + "<activity>"
-				+ "<description>Surfing with my friends</description>" + "<name>Surfing</name>"
-				+ "<place>Garda Lake</place>" + "<startdate>2017-10-10T14:00:00.0</startdate>" + "</activity>";
+				+ "<description>Swimming in the river</description>" + "<name>Swimming</name>"
+				+ "<place>Adige river</place>" + "<startdate>2017-12-28T08:50:00.0</startdate>" + "</activity>";
 
 		Response this_resp = service.path(request).request().accept(type).post(Entity.entity(requestBody, content));
 		String this_xml = this_resp.readEntity(String.class);
@@ -623,7 +638,129 @@ public class TestClient {
 		if (resp.getStatus() == 404)
 			result = true;
 		resp = this_resp;
-		
+
 		return result;
+	}
+
+	private static String[] api6JSON() throws JsonProcessingException, IOException {
+		// GET Request #6 --- GET BASEURL/activity_types
+		// Accept: application/json
+		// variable
+		start = "Request #6: GET /";
+		request = "activity_types";
+		type = MediaType.APPLICATION_JSON;
+		content = null;
+		result = false;
+
+		resp = service.path(request).request().accept(type).get();
+
+		json = resp.readEntity(String.class);
+
+		JsonNode node = mapper.readTree(json).get("activityTypes");
+
+		int size = node.size();
+		if (size > 2)
+			result = true;
+
+		String[] activityTypes = new String[size];
+		for (int i = 0; i < size; i++) {
+			activityTypes[i] = node.get(i).textValue();
+		}
+		return activityTypes;
+	}
+
+	private static void api7JSON(String[] vector, String id) throws JsonProcessingException, IOException {
+		// GET Request #7 --- GET BASEURL/person/{id}/{activity_types}
+		// Accept: application/json
+		start = "Request #7: GET /";
+		request = "person/" + id + "/";
+		type = MediaType.APPLICATION_JSON;
+		content = null;
+		result = false;
+		Response this_res = null;
+		String this_req = null;
+		String this_json = null;
+
+		for (int i = 0; i < vector.length; i++) {
+			String request1 = request + vector[i];
+
+			resp = service.path(request1).request().accept(type).get();
+			if (resp.getStatus() == 200) {
+				result = true;
+				json = resp.readEntity(String.class);
+				JsonNode node = mapper.readTree(json);
+				if (!"[]".equals(json)) {
+					activityType = node.get(0).get("activityType").get("activity_type").textValue();
+					activityId = node.get(0).path("idActivity").asText();
+					id = first_id;
+					this_res = resp;
+					this_req = request1;
+					this_json = json;
+				}
+			}
+		}
+		resp = this_res;
+		request = this_req;
+		json = this_json;
+	}
+
+	private static void api8JSON(String id) {
+		// GET Request #8 --- GET BASEURL/person/{id}/{activity_type}/{activity_id}
+		// Accept: application/json
+		// variable
+		start = "Request #8: GET /";
+		request = "person/" + id + "/" + activityType + "/" + activityId;
+		type = MediaType.APPLICATION_JSON;
+		content = null;
+		result = false;
+
+		resp = service.path(request).request().accept(type).get();
+
+		json = resp.readEntity(String.class);
+
+		if ((resp.getStatus() == 200 || resp.getStatus() == 202) && !json.isEmpty())
+			result = true;
+	}
+
+	private static void api9JSON(String[] vector) throws JsonProcessingException, IOException {
+		// POST Request #9 --- POST BASEURL/person/{first_person_id}/{activityType}
+		// Accept: application/json
+
+		/* First call */
+		api7JSON(vector, first_id);
+		JsonNode node = mapper.readTree(json);
+		int count = node.size();
+
+		start = "Request #9: POST /";
+		type = MediaType.APPLICATION_JSON;
+		content = MediaType.APPLICATION_JSON;
+		result = false;
+		request = "person/" + first_id + "/" + activityType;
+		String requestBody = "{"
+								+ "\"name\" : \"Swimming\","
+								+ "\"description\" : \"Swimming in the river\" ,"
+								+ "\"place\" : \"Adige river\","
+								+ "\"startdate\" : \"2017-12-28T08:50:00.0\""
+							+ "}";
+
+		Response this_resp = service.path(request).request().accept(type).post(Entity.entity(requestBody, content));
+		String this_json = this_resp.readEntity(String.class);
+
+		/* Second call */
+		api7JSON(vector, first_id);
+		node = mapper.readTree(json);
+		int second_count = node.size();
+
+		// reset variable
+		start = "Request #9: POST /";
+		type = MediaType.APPLICATION_JSON;
+		content = MediaType.APPLICATION_JSON;
+		result = false;
+		request = "person/" + first_id + "/" + activityType;
+		resp = this_resp;
+		json = this_json;
+
+		if (count + 1 == second_count)
+			result = true;
 	}
 }

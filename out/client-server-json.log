@@ -3,7 +3,7 @@ Request #1: GET /person Accept: application/json
 => HTTP Status: 200
 [ {
   "idPerson" : 1,
-  "firstname" : "Graziano",
+  "firstname" : "Massimo",
   "lastname" : "Rossi",
   "birthdate" : "1991-01-15",
   "activity" : [ ]
@@ -81,7 +81,7 @@ Request #2: GET /person/1 Accept: application/json
 => HTTP Status: 200
 {
   "idPerson" : 1,
-  "firstname" : "Graziano",
+  "firstname" : "Massimo",
   "lastname" : "Rossi",
   "birthdate" : "1991-01-15",
   "activity" : [ ]
@@ -99,13 +99,13 @@ Request #4: POST /person Accept: application/json Content-Type: application/json
 => Result: OK
 => HTTP Status: 200
 {
-  "idPerson" : 17,
+  "idPerson" : 12,
   "firstname" : "Enrico",
   "lastname" : "Chiesa",
   "birthdate" : "1993-02-10",
   "activity" : [ {
-    "idActivity" : 18,
-    "idPerson" : 17,
+    "idActivity" : 19,
+    "idPerson" : 12,
     "idActivityType" : 3,
     "name" : "Climbing",
     "description" : "Mountain Climbing",
@@ -114,7 +114,7 @@ Request #4: POST /person Accept: application/json Content-Type: application/json
     "activityType" : null
   } ]
 }
-Request #5: DELETE /person/17 Accept: application/json
+Request #5: DELETE /person/12 Accept: application/json
 => Result: OK
 => HTTP Status: 204
 null
@@ -131,10 +131,10 @@ Request #7: GET /person/1/Social Accept: application/json
   "idActivity" : 1,
   "idPerson" : 1,
   "idActivityType" : 1,
-  "name" : "Running",
-  "description" : "Running with friends",
-  "place" : "City Centre Trento",
-  "startdate" : "2017-10-13T09:50:00.0",
+  "name" : "Go carting",
+  "description" : "Go Carting with Friends",
+  "place" : "Affi cart centre",
+  "startdate" : "2017-12-28T08:50:00.0",
   "activityType" : {
     "activity_type" : "Social"
   }
@@ -146,6 +146,72 @@ Request #7: GET /person/1/Social Accept: application/json
   "description" : "Skateboarding with friends",
   "place" : "Rovereto Centre",
   "startdate" : "2017-10-17T16:00:00.0",
+  "activityType" : {
+    "activity_type" : "Social"
+  }
+}, {
+  "idActivity" : 8,
+  "idPerson" : 1,
+  "idActivityType" : 1,
+  "name" : "Swimming",
+  "description" : "Swimming in the river",
+  "place" : "Adige river",
+  "startdate" : "2017-12-28T08:50:00.0",
+  "activityType" : {
+    "activity_type" : "Social"
+  }
+}, {
+  "idActivity" : 10,
+  "idPerson" : 1,
+  "idActivityType" : 1,
+  "name" : "Swimming",
+  "description" : "Swimming in the river",
+  "place" : "Adige river",
+  "startdate" : "2017-12-28T08:50:00.0",
+  "activityType" : {
+    "activity_type" : "Social"
+  }
+}, {
+  "idActivity" : 12,
+  "idPerson" : 1,
+  "idActivityType" : 1,
+  "name" : "Swimming",
+  "description" : "Swimming in the river",
+  "place" : "Adige river",
+  "startdate" : "2017-12-28T08:50:00.0",
+  "activityType" : {
+    "activity_type" : "Social"
+  }
+}, {
+  "idActivity" : 14,
+  "idPerson" : 1,
+  "idActivityType" : 1,
+  "name" : "Swimming",
+  "description" : "Swimming in the river",
+  "place" : "Adige river",
+  "startdate" : "2017-12-28T08:50:00.0",
+  "activityType" : {
+    "activity_type" : "Social"
+  }
+}, {
+  "idActivity" : 16,
+  "idPerson" : 1,
+  "idActivityType" : 1,
+  "name" : "Swimming",
+  "description" : "Swimming in the river",
+  "place" : "Adige river",
+  "startdate" : "2017-12-28T08:50:00.0",
+  "activityType" : {
+    "activity_type" : "Social"
+  }
+}, {
+  "idActivity" : 18,
+  "idPerson" : 1,
+  "idActivityType" : 1,
+  "name" : "Swimming",
+  "description" : "Swimming in the river",
+  "place" : "Adige river",
+  "startdate" : "2017-12-28T08:50:00.0",
   "activityType" : {
     "activity_type" : "Social"
   }
@@ -184,7 +250,7 @@ Request #9: POST /person/1/Social Accept: application/json Content-Type: applica
 => Result: OK
 => HTTP Status: 200
 {
-  "idActivity" : 19,
+  "idActivity" : 20,
   "idPerson" : 1,
   "idActivityType" : 1,
   "name" : "Swimming",
@@ -195,3 +261,33 @@ Request #9: POST /person/1/Social Accept: application/json Content-Type: applica
     "activity_type" : "Social"
   }
 }
+Request #10: PUT /person/1/Social/1 Accept: application/json Content-Type: application/json
+=> Result: OK
+=> HTTP Status: 200
+{
+  "idActivity" : 1,
+  "idPerson" : 1,
+  "idActivityType" : 1,
+  "name" : "Go carting",
+  "description" : "Go carting with friends",
+  "place" : "Affi centre",
+  "startdate" : "2017-12-28T08:50:00.0",
+  "activityType" : {
+    "activity_type" : "Social"
+  }
+}
+Request #11: GET /person/2/Social?before=2017-10-13T00:00:00.0&after=2017-10-15T00:00:00.0 Accept: application/json
+=> Result: OK
+=> HTTP Status: 200
+[ {
+  "idActivity" : 2,
+  "idPerson" : 2,
+  "idActivityType" : 1,
+  "name" : "Dancing",
+  "description" : "Dancing Group Dances",
+  "place" : "Iris Club",
+  "startdate" : "2017-10-13T21:00:00.0",
+  "activityType" : {
+    "activity_type" : "Social"
+  }
+} ]

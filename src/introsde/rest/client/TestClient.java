@@ -44,42 +44,44 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestClient {
 
-	private static String first_id;
-	private static String last_id;
-	private static DocumentBuilderFactory domFactory;
-	private static DocumentBuilder builder;
-	private static XPath xpath;
-	private static WebTarget service;
-	private static String start;
-	private static String request;
-	private static String type;
-	private static String content;
-	private static boolean result;
-	private static String xml;
-	private static String json;
 	private static Document doc;
+	private static DocumentBuilder builder;
+	private static DocumentBuilderFactory domFactory;
+	private static ObjectMapper mapper;
+	private static PrintStream printJSON;
+	private static PrintStream printXML;
 	private static Response resp;
 	private static String activityId;
 	private static String activityType;
-	private static ObjectMapper mapper;
-	private static PrintStream printxml;
-	private static PrintStream printjson;
+	private static String content;
+	private static String firstId;
+	private static String json;
+	private static String lastId;
+	private static String request;
+	private static String start;
+	private static String type;
+	private static String xml;
+	private static WebTarget service;
+	private static XPath xpath;
+	private static boolean result;
 
-	private static String clientServerXmlLog = "out/client-server-xml.log";
-	private static String clientServerJsonlLog = "out/client-server-json.log";
+	private static String clientServerXmlLog = "client-server-xml.log";
+	private static String clientServerJsonlLog = "client-server-json.log";
 
 	public static void main(String[] args) throws ParserConfigurationException, XPathExpressionException, SAXException,
 			IOException, TransformerException {
 		initialize();
 
+		init();
+		
 		// JSON Requests
 		api1JSON();
 		printResult();
 
-		api2JSON(first_id);
+		api2JSON(firstId);
 		printResult();
 
-		api3JSON(first_id);
+		api3JSON(firstId);
 		printResult();
 
 		String newPersonId = api4JSON();
@@ -91,18 +93,18 @@ public class TestClient {
 		String[] activityType = api6JSON();
 		printResult();
 
-		api7JSON(activityType, first_id);
+		api7JSON(activityType, firstId);
 		printResult();
-		api7JSON(activityType, last_id);
+		api7JSON(activityType, lastId);
 		printResult();
 
-		api8JSON(last_id);
+		api8JSON(lastId);
 		printResult();
 
 		api9JSON(activityType);
 		printResult();
 
-		api10JSON(first_id);
+		api10JSON(firstId);
 		printResult();
 
 		api11JSON("2");
@@ -112,10 +114,10 @@ public class TestClient {
 		api1Xml();
 		printResult();
 		
-		api2XML(first_id);
+		api2XML(firstId);
 		printResult();
 		
-		api3XML(first_id);
+		api3XML(firstId);
 		printResult();
 		
 		newPersonId = api4XML(); 
@@ -127,18 +129,18 @@ public class TestClient {
 		activityType = api6XML();
 		printResult();
 		
-		api7XML(activityType, first_id);
+		api7XML(activityType, firstId);
 		printResult();
-		api7XML(activityType, last_id); 
+		api7XML(activityType, lastId); 
 		printResult();
 		
-		api8XML(last_id);
+		api8XML(lastId);
 		printResult();
 		
 		api9XML(activityType);
 		printResult();
 		
-		api10XML(first_id); 
+		api10XML(firstId); 
 		printResult();
 		
 		api11XML("2");
@@ -150,7 +152,7 @@ public class TestClient {
 		// return
 		// UriBuilder.fromUri("https://introsde2017-assignment-2-server.herokuapp.com/introsde").build();
 	}
-
+	
 	private static void initialize() throws ParserConfigurationException, FileNotFoundException {
 		ClientConfig clientConfig = new ClientConfig();
 		Client client = ClientBuilder.newClient(clientConfig);
@@ -163,8 +165,8 @@ public class TestClient {
 		xpath = factory.newXPath();
 		FileOutputStream filexml = new FileOutputStream(clientServerXmlLog);
 		FileOutputStream filejson = new FileOutputStream(clientServerJsonlLog);
-		printxml = new PrintStream(filexml);
-		printjson = new PrintStream(filejson);
+		printXML = new PrintStream(filexml);
+		printJSON = new PrintStream(filejson);
 
 		mapper = new ObjectMapper();
 	}
@@ -172,9 +174,9 @@ public class TestClient {
 	private static void printResult() throws TransformerException {
 		PrintStream stream = null;
 		if (type == MediaType.APPLICATION_XML) {
-			stream = printxml;
+			stream = printXML;
 		} else if (type == MediaType.APPLICATION_JSON) {
-			stream = printjson;
+			stream = printJSON;
 		}
 		stream.print(start + request + " Accept: " + type);
 		System.out.print(start + request + " Accept: " + type);
@@ -210,7 +212,7 @@ public class TestClient {
 			System.out.println("=> HTTP Status: NO RESPONSE");
 		}
 	}
-
+	
 	private static String printXML(Document doc) throws TransformerException {
 		Transformer transformer = TransformerFactory.newInstance().newTransformer();
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -236,6 +238,13 @@ public class TestClient {
 		}
 		return jsonString;
 	}
+	
+	private static void init() {
+		// GET Request#0 --- GET BASEURL/person/init
+		request = "person/init";
+		resp = service.path(request).request().get();
+		System.out.println(resp.readEntity(String.class));
+	}
 
 	public static void api1Xml() throws SAXException, IOException, XPathExpressionException {
 		// GET Request#1 --- GET BASEURL/person
@@ -260,12 +269,12 @@ public class TestClient {
 		// First id
 		expr = xpath.compile("//person[1]/idPerson");
 		Node node = (Node) expr.evaluate(doc, XPathConstants.NODE);
-		first_id = node.getTextContent();
+		firstId = node.getTextContent();
 
 		// Last id
 		expr = xpath.compile("//person[last()]/idPerson");
 		node = (Node) expr.evaluate(doc, XPathConstants.NODE);
-		last_id = node.getTextContent();
+		lastId = node.getTextContent();
 	}
 
 	private static void api2XML(String id)
@@ -424,7 +433,7 @@ public class TestClient {
 					expr = xpath.compile("//idActivity[1]");
 					node = (Node) expr.evaluate(doc, XPathConstants.NODE);
 					activityId = node.getTextContent();
-					id = first_id;
+					id = firstId;
 					this_res = resp;
 					this_req = request1;
 					this_xml = xml;
@@ -466,7 +475,7 @@ public class TestClient {
 		// Accept: application/xml
 
 		/* First call */
-		api7XML(vector, first_id);
+		api7XML(vector, firstId);
 		XPathExpression expr = xpath.compile("count(//activity)");
 		int count = Integer.parseInt((String) expr.evaluate(doc, XPathConstants.STRING));
 
@@ -474,7 +483,7 @@ public class TestClient {
 		type = MediaType.APPLICATION_XML;
 		content = MediaType.APPLICATION_XML;
 		result = false;
-		request = "person/" + first_id + "/" + activityType;
+		request = "person/" + firstId + "/" + activityType;
 		String requestBody = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + "<activity>"
 				+ "<description>Swimming in the river</description>" + "<name>Swimming</name>"
 				+ "<place>Adige river</place>" + "<startdate>2017-12-28T08:50:00.0</startdate>" + "</activity>";
@@ -484,7 +493,7 @@ public class TestClient {
 		Document this_doc = builder.parse(new InputSource(new StringReader(this_xml)));
 
 		/* Second call */
-		api7XML(vector, first_id);
+		api7XML(vector, firstId);
 		expr = xpath.compile("count(//activity)");
 		int second_count = Integer.parseInt((String) expr.evaluate(doc, XPathConstants.STRING));
 
@@ -493,7 +502,7 @@ public class TestClient {
 		type = MediaType.APPLICATION_XML;
 		content = MediaType.APPLICATION_XML;
 		result = false;
-		request = "person/" + first_id + "/" + activityType;
+		request = "person/" + firstId + "/" + activityType;
 		resp = this_resp;
 		xml = this_xml;
 		doc = this_doc;
@@ -586,10 +595,10 @@ public class TestClient {
 			result = true;
 
 		// first id
-		first_id = nodes.get(0).path("idPerson").asText();
+		firstId = nodes.get(0).path("idPerson").asText();
 
 		// last id
-		last_id = nodes.get(nodes.size() - 1).path("idPerson").asText();
+		lastId = nodes.get(nodes.size() - 1).path("idPerson").asText();
 	}
 
 	private static void api2JSON(String id) {
@@ -732,7 +741,7 @@ public class TestClient {
 				if (!"[]".equals(json)) {
 					activityType = node.get(0).get("activityType").get("activity_type").textValue();
 					activityId = node.get(0).path("idActivity").asText();
-					id = first_id;
+					id = firstId;
 					this_res = resp;
 					this_req = request1;
 					this_json = json;
@@ -767,7 +776,7 @@ public class TestClient {
 		// Accept: application/json
 
 		/* First call */
-		api7JSON(vector, first_id);
+		api7JSON(vector, firstId);
 		JsonNode node = mapper.readTree(json);
 		int count = node.size();
 
@@ -775,7 +784,7 @@ public class TestClient {
 		type = MediaType.APPLICATION_JSON;
 		content = MediaType.APPLICATION_JSON;
 		result = false;
-		request = "person/" + first_id + "/" + activityType;
+		request = "person/" + firstId + "/" + activityType;
 		String requestBody = "{" + "\"name\" : \"Swimming\"," + "\"description\" : \"Swimming in the river\" ,"
 				+ "\"place\" : \"Adige river\"," + "\"startdate\" : \"2017-12-28T08:50:00.0\"" + "}";
 
@@ -783,7 +792,7 @@ public class TestClient {
 		String this_json = this_resp.readEntity(String.class);
 
 		/* Second call */
-		api7JSON(vector, first_id);
+		api7JSON(vector, firstId);
 		node = mapper.readTree(json);
 		int second_count = node.size();
 
@@ -792,7 +801,7 @@ public class TestClient {
 		type = MediaType.APPLICATION_JSON;
 		content = MediaType.APPLICATION_JSON;
 		result = false;
-		request = "person/" + first_id + "/" + activityType;
+		request = "person/" + firstId + "/" + activityType;
 		resp = this_resp;
 		json = this_json;
 

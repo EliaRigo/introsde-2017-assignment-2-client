@@ -126,7 +126,7 @@
             </fileset>
         </copy>
     </target>
-	<target name="start-client" depends="install">
+	<target name="execute.client" depends="install">
 		<echo message="Client starts introsde.rest.client.TestClient in ${build.dir}" />
 	    <java classname="introsde.rest.client.TestClient" classpath="${build.dir}" fork="true">
 	    	<arg value="$JAVA_OPTS  -cp" />

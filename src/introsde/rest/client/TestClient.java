@@ -107,7 +107,7 @@ public class TestClient {
 		api10JSON(firstId);
 		printResult();
 
-		api11JSON("2");
+		api11JSON(lastId);
 		printResult();
 		
 		// XML Requests
@@ -143,7 +143,7 @@ public class TestClient {
 		api10XML(firstId); 
 		printResult();
 		
-		api11XML("2");
+		api11XML(lastId);
 		printResult();
 	}
 
@@ -552,8 +552,8 @@ public class TestClient {
 		// BASEURL/person/{id}/{activity_type}?before={beforeDate}&after={afterDate}
 		// Accept: application/xml
 		// variable
-		String before = "2017-10-13T00:00:00.0";
-		String after = "2017-10-15T00:00:00.0";
+		String before = "2017-10-15T00:00:00.0";
+		String after = "2017-10-18T00:00:00.0";
 		activityType = "Social";
 		start = "Request #11: GET /";
 		request = "person/" + id + "/" + activityType;
@@ -846,8 +846,8 @@ public class TestClient {
 		// GET Request #11 --- GET
 		// BASEURL/person/{id}/{activity_type}?before={beforeDate}&after={afterDate}
 		// Accept: application/json
-		String before = "2017-10-13T00:00:00.0";
-		String after = "2017-10-15T00:00:00.0";
+		String before = "2017-10-15T00:00:00.0";
+		String after = "2017-10-18T00:00:00.0";
 		activityType = "Social";
 		start = "Request #11: GET /";
 		request = "person/" + id + "/" + activityType;

@@ -65,7 +65,7 @@ Request #1: GET /person Accept: application/xml
         <idPerson>4</idPerson>
         <name>Skiing</name>
         <place>Bondone Mountain</place>
-        <startdate>2017-10-15T0800:00.0</startdate>
+        <startdate>2017-10-15T08:00:00.0</startdate>
       </activity>
     </activitiesPreference>
   </person>
@@ -244,7 +244,7 @@ Request #10: PUT /person/1/Social/1 Accept: application/xml Content-Type: applic
   <startdate>2017-12-28T08:50:00.0</startdate>
 </activity>
 
-Request #11: GET /person/2/Social?before=2017-10-13T00:00:00.0&after=2017-10-15T00:00:00.0 Accept: application/xml
+Request #11: GET /person/5/Social?before=2017-10-15T00:00:00.0&after=2017-10-18T00:00:00.0 Accept: application/xml
 => Result: OK
 => HTTP Status: 200
 <?xml version="1.0" encoding="UTF-8"?><activities>
@@ -252,13 +252,13 @@ Request #11: GET /person/2/Social?before=2017-10-13T00:00:00.0&after=2017-10-15T
     <activityType>
       <activity_type>Social</activity_type>
     </activityType>
-    <description>Dancing Group Dances</description>
-    <idActivity>2</idActivity>
+    <description>Skateboarding with friends</description>
+    <idActivity>5</idActivity>
     <idActivityType>1</idActivityType>
-    <idPerson>2</idPerson>
-    <name>Dancing</name>
-    <place>Iris Club</place>
-    <startdate>2017-10-13T21:00:00.0</startdate>
+    <idPerson>5</idPerson>
+    <name>Skateboarding</name>
+    <place>Rovereto Centre</place>
+    <startdate>2017-10-17T16:00:00.0</startdate>
   </activity>
 </activities>
 

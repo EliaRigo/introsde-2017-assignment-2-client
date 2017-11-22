@@ -64,7 +64,7 @@ Request #1: GET /person Accept: application/json
     "name" : "Skiing",
     "description" : "Skiing on the Bondone Mountain",
     "place" : "Bondone Mountain",
-    "startdate" : "2017-10-15T0800:00.0",
+    "startdate" : "2017-10-15T08:00:00.0",
     "activityType" : {
       "activity_type" : "Sport"
     }
@@ -221,17 +221,17 @@ Request #10: PUT /person/1/Social/1 Accept: application/json Content-Type: appli
     "activity_type" : "Social"
   }
 }
-Request #11: GET /person/2/Social?before=2017-10-13T00:00:00.0&after=2017-10-15T00:00:00.0 Accept: application/json
+Request #11: GET /person/5/Social?before=2017-10-15T00:00:00.0&after=2017-10-18T00:00:00.0 Accept: application/json
 => Result: OK
 => HTTP Status: 200
 [ {
-  "idActivity" : 2,
-  "idPerson" : 2,
+  "idActivity" : 5,
+  "idPerson" : 5,
   "idActivityType" : 1,
-  "name" : "Dancing",
-  "description" : "Dancing Group Dances",
-  "place" : "Iris Club",
-  "startdate" : "2017-10-13T21:00:00.0",
+  "name" : "Skateboarding",
+  "description" : "Skateboarding with friends",
+  "place" : "Rovereto Centre",
+  "startdate" : "2017-10-17T16:00:00.0",
   "activityType" : {
     "activity_type" : "Social"
   }

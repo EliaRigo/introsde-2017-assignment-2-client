@@ -19,7 +19,7 @@
 
 **elia.rigo@studenti.unitn.it**
 
-**HEROKU Server URL: <link-here>**
+**HEROKU Server URL: https://introsde2017-assign-2-server.herokuapp.com/assignment/**
 
 ## Code
 **introsde-2017-assignment-2-client**

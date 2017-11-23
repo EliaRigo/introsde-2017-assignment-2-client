@@ -148,9 +148,9 @@ public class TestClient {
 	}
 
 	private static URI getBaseURI() {
-		return UriBuilder.fromUri("http://127.0.1.1:5900/introsde").build();
-		// return
-		// UriBuilder.fromUri("https://introsde2017-assignment-2-server.herokuapp.com/introsde").build();
+		//return UriBuilder.fromUri("http://127.0.1.1:5900/introsde").build();
+		return
+		UriBuilder.fromUri("https://introsde2017-assign-2-server.herokuapp.com/assignment/").build();
 	}
 	
 	private static void initialize() throws ParserConfigurationException, FileNotFoundException {
@@ -359,7 +359,9 @@ public class TestClient {
 		doc = null;
 
 		Response this_resp = service.path(request).request().accept(type).delete();
-		api2XML(id);
+		try {
+			api2XML(id); //Tomcat return a 404 HTML page that mess up the api2JSON
+		} catch (Exception ex) {}
 
 		// reset variable
 		start = "Request #5: DELETE /";
@@ -677,7 +679,9 @@ public class TestClient {
 		doc = null;
 
 		Response this_resp = service.path(request).request().accept(type).delete();
-		api2JSON(id);
+		try {
+			api2JSON(id); //Tomcat return a 404 HTML page that mess up the api2JSON
+		} catch (Exception ex) {}
 
 		// reset variable
 		start = "Request #5: DELETE /";
